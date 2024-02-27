@@ -1,7 +1,7 @@
 import {Item} from "../item";
 import {Payer} from "../payer";
 
-export class TaxesDTO {
+export class VoucherDTO {
 
   constructor(
     public type: string,

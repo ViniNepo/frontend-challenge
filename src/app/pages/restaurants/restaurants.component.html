@@ -1,1 +1,73 @@
-<p>restaurants works!</p>
+<div class="flex flex-col h-screen bg-zinc-100">
+  <header class="py-5 bg-zinc-200 text-white text-center">
+
+    <div class="flex flex-col items-center">
+      <div class="flex flex-row items-center space-x-2">
+        <img src="assets/images/logo.png" class="flex h-12 w-12 object-cover ml-2 rounded-full">
+        <h2 class="flex text-zinc-900">Cantinho do Italiano</h2>
+      </div>
+    </div>
+
+  </header>
+  <main class="flex-1 overflow-y-auto p-5">
+
+        <h2 class="text-zinc-900">Pratos salgados</h2>
+
+        <ul class="mt-4 flex flex-col list-none space-y-1">
+          <li *ngFor="let saltFood of saltItems" class="hover:bg-zinc-200 hover:rounded-md transition-colors pt-2 pb-2">
+            <div class="flex items-center">
+              <img src="assets/images/{{saltFood.item.image}}" class="h-16 w-16 object-cover ml-2 rounded-md">
+              <div class="flex-1 ml-2">
+                <div class="flex flex-col">
+                  <h5 class="text-zinc-900 text-sm ml-2">{{saltFood.item.name}}</h5>
+                  <h5 class="text-green-700 text-sm font-semibold ml-2">R$ {{saltFood.item.value}}</h5>
+                </div>
+              </div>
+              <div class="flex flex-row no-underline text-zinc-400 space-x-2 mr-2">
+                <button (click)="subtractItem(saltFood)" *ngIf="saltFood.quantity > 0"
+                        class="no-underline text-zinc-200 bg-transparent border-none hover:text-sky-500 pb-1">
+                  <lucide-icon name="minus" class="minus text-red-400"></lucide-icon>
+                </button>
+                <h4 class="text-md text-zinc-500" *ngIf="saltFood.quantity > 0">{{saltFood.quantity}}</h4>
+                <button (click)="addItem(saltFood)"
+                        class="no-underline text-zinc-200 bg-transparent border-none hover:text-sky-500 pb-1">
+                  <lucide-icon name="plus" class="plus text-red-400"></lucide-icon>
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <h2 class="pt-5 text-zinc-900">Pratos doces</h2>
+
+        <ul class="mt-4 flex flex-col list-none space-y-1">
+          <li *ngFor="let sweetFood of sweetItems" class="hover:bg-zinc-200 hover:rounded-md transition-colors pt-2 pb-2">
+            <div class="flex items-center">
+              <img src="assets/images/{{sweetFood.item.image}}" class="h-16 w-16 object-cover ml-2 rounded-md">
+              <div class="flex-1 ml-2">
+                <h5 class="flex-1 text-zinc-900 ml-2">{{sweetFood.item.name}}</h5>
+                <h5 class="flex-1 text-green-700 ml-2">R$ {{sweetFood.item.value}}</h5>
+              </div>
+              <div class="flex flex-row no-underline text-zinc-400 space-x-2 mr-2">
+                <button (click)="subtractItem(sweetFood)" *ngIf="sweetFood.quantity > 0"
+                        class="no-underline text-zinc-200 bg-transparent border-none hover:text-sky-500 pb-1">
+                  <lucide-icon name="minus" class="minus text-red-400"></lucide-icon>
+                </button>
+                <h4 class="text-md text-zinc-900" *ngIf="sweetFood.quantity > 0">{{sweetFood.quantity}}</h4>
+                <button (click)="addItem(sweetFood)"
+                        class="no-underline text-zinc-200 bg-transparent border-none hover:text-sky-500 pb-1">
+                  <lucide-icon name="plus" class="plus text-red-400"></lucide-icon>
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+  </main>
+
+  <footer>
+    <button [disabled]="this.kartCount <= 0" (click)="sendSelectItemsToPayment()" class="py-5 bg-sky-700 text-center text-white w-full disabled:bg-zinc-500 disabled:cursor-not-allowed">
+      <h4>Ir para pagamento</h4>
+    </button>
+  </footer>
+</div>

@@ -1,1 +1,153 @@
-<p>payment works!</p>
+<div class="flex flex-col h-screen bg-zinc-100">
+  <header class="bg-zinc-200">
+
+    <div class="flex flex-col items-center pt-5 pb-5">
+      <div class="flex flex-row items-center space-x-2">
+        <img src="assets/images/logo.png" class="flex h-12 w-12 object-cover ml-2 rounded-full">
+        <h2 class="flex text-zinc-900">Cantinho do Italiano</h2>
+      </div>
+    </div>
+
+    <div class="flex flex-row items-center bg-zinc-200 pl-2 pr-2 pb-2">
+      <h2 class="flex-1 text-zinc-900">Carrinho de compras</h2>
+      <button (click)="addPayer()" class="p-2 bg-sky-700 text-center text-white rounded-md">
+        <h4 class="text-sm">Adicionar pagador</h4>
+      </button>
+    </div>
+
+  </header>
+  <main class="flex-1 overflow-y-auto p-2">
+
+    <ul *ngFor="let payer of payers; index as i;"
+        class="flex flex-col list-none space-y-1 border-2 border-solid border-zinc-500 rounded-md p-2 mb-2">
+      <div class="flex flex-row item-ceter">
+        <h4 class="flex-1 font-semibold text-sm">Produtos selecionados</h4>
+        <h4 *ngIf="payers.length > 1" class="font-semibold text-sm">cliente #{{i + 1}}</h4>
+      </div>
+      <li *ngFor="let selectedItem of payer.items"
+          class="hover:bg-zinc-200 hover:rounded-md transition-colors pt-2 pb-2">
+        <div class="flex items-center">
+          <img src="assets/images/{{selectedItem.item.image}}" class="h-16 w-16 object-cover ml-2 rounded-md">
+          <div class="flex-1 text-zinc-900 ml-2">
+            <h5 class="flex-1 text-zinc-900 ml-2">{{selectedItem.item.name}}</h5>
+            <h5 class="flex-1 text-zinc-900 ml-2">R$ {{selectedItem.item.value}}</h5>
+          </div>
+          <div class="flex flex-row no-underline text-zinc-900 space-x-2 mr-2">
+            <h4 class="text-md">{{selectedItem.quantity}} qtd</h4>
+          </div>
+        </div>
+      </li>
+      <li *ngIf="payer.items.length == 0">
+        <div class="pt-2 pb-2 flex flex-row item-center">
+          <h4 class="flex-1 pt-1 pb-1 text-md text-zinc-900">Selecione seus items a pagar</h4>
+          <button (click)="toggleShowOption(i)" class="p-1 bg-green-700 text-center text-white rounded-md">
+            <h4 class="text-sm">Selecionar</h4>
+          </button>
+        </div>
+      </li>
+      <button *ngIf="payers.length > 1 && payer.items.length != this.selectedItems.length && payers[i].items.length > 0"
+              (click)="toggleShowOption(i)" class="p-1 bg-green-700 text-center text-white rounded-md">
+        <h4 class="text-sm">Selecionar mais itens</h4>
+      </button>
+      <div>
+        <div class="flex flex-row item-center space-x-2">
+          <h4 class="flex-1 pt-2 pb-2 font-semibold text-sm">Metodo de pagamento:</h4>
+          <select class='flex w-32 block p-2 px-0 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-900'
+                  #mySelect
+                  (change)='selectPaymentMethod(mySelect.value, i)'>
+            <option class='option'
+                    *ngFor='let option of paymentOptions'
+                    [value]="option.value">{{option.text}}</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div class="mt-2 pt-2 border-t-2 border-dashed border-zinc-300 flex flex-row item-center">
+          <h4 class="flex-1 font-semibold text-sm">Total dos items por cliente:</h4>
+          <h4 class="font-semibold text-sm">R$ {{payers[i].amount}}</h4>
+        </div>
+      </div>
+    </ul>
+  </main>
+
+  <footer class="bg-zinc-200">
+    <form class="pt-5" [formGroup]="form">
+      <div class="pt-2 pl-5 pb-2 pr-5 space-y-1">
+        <h4 class="text-xs text-right text-red-700">Selecione o tipo de taxa</h4>
+
+        <div class="flex flex-row items-center space-x-4">
+          <h4 class="flex-1 text-md font-semibold text-zinc-900">Cupom de desconto: </h4>
+          <input formControlName="discountCoupon" id="discountCoupon" type="number" class="w-20 rounded-md p-2"
+                 placeholder="valor">
+          <button id="coupon-real" (click)="setCouponType(1)" [class.bg-zinc-300]="couponTaxRealColor" class="p-2 rounded-md hover:bg-zinc-300">
+            <h4>R$</h4>
+          </button>
+          <button id="coupon-percentage" (click)="setCouponType(2)" [class.bg-zinc-300]="couponTaxPercentageColor" class="p-2 rounded-md hover:bg-zinc-300">
+            <lucide-icon name="percent" class="percent text-zinc-900" size="20"></lucide-icon>
+          </button>
+        </div>
+
+        <div class="flex flex-row items-center space-x-4">
+          <h4 class="flex-1 text-md font-semibold text-zinc-900">Taxa de entrega: </h4>
+          <input formControlName="deliveryTax" id="deliveryTax" type="number" class="w-20 rounded-md p-2"
+                 placeholder="valor">
+          <button id="delivery-real" (click)="setDeliveryType(1)" [class.bg-zinc-300]="deliveryTaxRealColor" class="p-2 rounded-md hover:bg-zinc-300"
+                  [ngClass]="backgroundButtonColor">
+            <h4>R$</h4>
+          </button>
+          <button id="delivery-percentage" (click)="setDeliveryType(2)" [class.bg-zinc-300]="deliveryTaxPercentageColor" class="p-2 rounded-md hover:bg-zinc-300"
+                  [ngClass]="backgroundButtonColor">
+            <lucide-icon name="percent" class="percent text-zinc-900" size="20"></lucide-icon>
+          </button>
+        </div>
+
+        <div class="flex flex-row items-center space-x-4">
+          <h4 class="flex-1 text-md font-semibold text-zinc-900">Taxa de serviço: </h4>
+          <input formControlName="serviceTax" id="serviceTax" type="number" class="w-20 rounded-md p-2"
+                 placeholder="valor">
+          <button id="service-real" (click)="setServiceType(1)" [class.bg-zinc-300]="serviceTaxRealColor" class="p-2 rounded-md hover:bg-zinc-300">
+            <h4>R$</h4>
+          </button>
+          <button id="service-percentage" (click)="setServiceType(2)" [class.bg-zinc-300]="serviceTaxPercentageColor" class="p-2 rounded-md hover:bg-zinc-300">
+            <lucide-icon name="percent" class="percent text-zinc-900" size="20"></lucide-icon>
+          </button>
+        </div>
+
+      </div>
+
+      <button (click)="submit()" [disabled]="!form.valid || hasClientEmpty || hasPaymentMethodEmpty"
+              class="pt-3 pb-3 bg-sky-700 text-center text-white w-full disabled:bg-zinc-500 disabled:cursor-not-allowed">
+        <h4>Finalizar pedido</h4>
+        <h4 class="text-xs font-semibold">R$ {{this.totalAmountWithTax}}</h4>
+      </button>
+    </form>
+  </footer>
+</div>
+
+<div *ngIf="showOptions" class="fixed inset-0 z-50 justify-center items-center rounded-xl flex">
+  <div class="relative w-auto p-2 bg-zinc-200 rounded-xl">
+    <div class="flex flex-row item-center">
+      <h2 class="flex-1 p-2 text-zinc-900 font-semibold">Selecione o item a ser pago</h2>
+      <button (click)="toggleShowOption(0)" class="p-2 rounded-full hover:bg-zinc-300">
+        <lucide-icon name="x" class="x text-zinc-900" size="20"></lucide-icon>
+      </button>
+    </div>
+
+    <div class="flex-1 pb-2 pt-2 overflow-y-auto h-72 bg-zinc-100 rounded-xl">
+      <ul class="mt-4 flex flex-col list-none space-y-1">
+        <li (click)="selectItem(item)" *ngFor="let item of selectedItems"
+            class="hover:bg-zinc-200 transition-colors pt-2 pb-2">
+          <div class="flex items-center">
+            <img src="assets/images/{{item.item.image}}" class="h-16 w-16 object-cover ml-2 rounded-md">
+            <div class="flex-1 text-zinc-900 ml-2 mr-2">
+              <h5 class="flex-1 text-zinc-900 ml-2">{{item.item.name}}</h5>
+              <h5 class="flex-1 text-zinc-900 ml-2">R$ {{item.item.value}}</h5>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+<div *ngIf="showOptions" class="opacity-50 fixed inset-0 z-40 bg-black"></div>

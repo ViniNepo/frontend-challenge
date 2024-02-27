@@ -1,4 +1,4 @@
-export class Items {
+export class Item {
 
   constructor(
     public id: number,

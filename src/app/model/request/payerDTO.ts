@@ -1,12 +1,11 @@
 import {Item} from "../item";
 import {Payer} from "../payer";
 
-export class ItemList {
+export class PayerDTO {
 
   constructor(
-    public payer: Payer,
-    public item: Item,
-    public quantity: number,
+    public paymentMethod: string,
+    public amount: number
   ) {
   }
 }

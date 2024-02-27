@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "backend-challenge": {
+    "frontend-challenge": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/backend-challenge",
+            "outputPath": "dist/frontend-challenge",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "backend-challenge:build:production"
+              "browserTarget": "frontend-challenge:build:production"
             },
             "development": {
-              "browserTarget": "backend-challenge:build:development"
+              "browserTarget": "frontend-challenge:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "backend-challenge:build"
+            "browserTarget": "frontend-challenge:build"
           }
         },
         "test": {
@@ -94,5 +94,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "e852c107-5de8-450b-9e63-85c0eee4caa8"
   }
 }
