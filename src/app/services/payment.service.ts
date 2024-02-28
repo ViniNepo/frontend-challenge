@@ -3,7 +3,7 @@ import {ItemList} from "../model/itemList";
 import {HttpClient} from "@angular/common/http";
 
 import {take} from "rxjs";
-import {RequestDTO} from "../model/request/requestDTO";
+import {PayloadRequest} from "../model/request/PayloadRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,7 @@ export class PaymentService {
   constructor(private http: HttpClient) {
   }
 
-  createLink(requestBody: RequestDTO) {
-    console.log(requestBody)
+  createLink(requestBody: PayloadRequest) {
     return this.http.post<string[]>(`http://localhost:8080/api/payment/create-link`, requestBody)
   }
 

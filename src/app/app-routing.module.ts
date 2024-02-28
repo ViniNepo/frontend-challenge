@@ -5,7 +5,7 @@ import {PaymentComponent} from "./pages/payment/payment.component";
 import {ResultComponent} from "./pages/result/result.component";
 
 const routes: Routes = [
-  {path: '', component: ResultComponent},
+  {path: '', component: RestaurantsComponent},
   {path: 'restaurant', component: RestaurantsComponent},
   {path: 'payment', component: PaymentComponent},
   {path: 'result', component: ResultComponent},

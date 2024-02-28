@@ -3,7 +3,7 @@ import {VoucherDTO} from "./voucherDTO";
 import {ServiceTaxDTO} from "./serviceTaxDTO";
 import {DeliveryTaxDTO} from "./deliveryTaxDTO";
 
-export class RequestDTO {
+export class PayloadRequest {
 
   constructor(
     public payersDTO: PayerDTO[],

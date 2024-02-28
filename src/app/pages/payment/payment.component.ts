@@ -3,7 +3,7 @@ import {ItemList} from "../../model/itemList";
 import {PaymentService} from "../../services/payment.service";
 import {Payer} from "../../model/payer";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {RequestDTO} from "../../model/request/requestDTO";
+import {PayloadRequest} from "../../model/request/PayloadRequest";
 import {PayerDTO} from "../../model/request/payerDTO";
 import {DeliveryTaxDTO} from "../../model/request/deliveryTaxDTO";
 import {ServiceTaxDTO} from "../../model/request/serviceTaxDTO";
@@ -34,8 +34,8 @@ export class PaymentComponent implements OnInit {
   totalAmount: number = 0
   totalAmountWithTax: number = 0
   paymentOptions = [
-    { text: 'Selecionar', value: 'none' },
-    { text: 'PayPal', value: 'paypal' }
+    { text: 'Selecionar', value: 'NONE' },
+    { text: 'PayPal', value: 'PAYPAL' }
   ]
 
   constructor(
@@ -123,11 +123,11 @@ export class PaymentComponent implements OnInit {
     if (type == 1) {
       this.deliveryTaxRealColor = true
       this.deliveryTaxPercentageColor = false
-      this.form.controls['deliveryTaxType'].setValue('real')
+      this.form.controls['deliveryTaxType'].setValue('REAL')
     } else {
       this.deliveryTaxRealColor = false
       this.deliveryTaxPercentageColor = true
-      this.form.controls['deliveryTaxType'].setValue('percentage')
+      this.form.controls['deliveryTaxType'].setValue('PERCENTAGE')
     }
 
     this.calcTotalAmount()
@@ -137,11 +137,11 @@ export class PaymentComponent implements OnInit {
     if (type == 1) {
       this.serviceTaxRealColor = true
       this.serviceTaxPercentageColor = false
-      this.form.controls['serviceTaxType'].setValue('real')
+      this.form.controls['serviceTaxType'].setValue('REAL')
     } else {
       this.serviceTaxRealColor = false
       this.serviceTaxPercentageColor = true
-      this.form.controls['serviceTaxType'].setValue('percentage')
+      this.form.controls['serviceTaxType'].setValue('PERCENTAGE')
     }
 
     this.calcTotalAmount()
@@ -151,11 +151,11 @@ export class PaymentComponent implements OnInit {
     if (type == 1) {
       this.couponTaxRealColor = true
       this.couponTaxPercentageColor = false
-      this.form.controls['discountCouponType'].setValue('real')
+      this.form.controls['discountCouponType'].setValue('REAL')
     } else {
       this.couponTaxRealColor = false
       this.couponTaxPercentageColor = true
-      this.form.controls['discountCouponType'].setValue('percentage')
+      this.form.controls['discountCouponType'].setValue('PERCENTAGE')
     }
     this.calcTotalAmount()
   }
@@ -178,21 +178,21 @@ export class PaymentComponent implements OnInit {
     let voucher = 0
     let serviceTax = 0
 
-    if (this.form.get('deliveryTaxType')?.value == 'real') {
+    if (this.form.get('deliveryTaxType')?.value == 'REAL') {
       deliveryTax = this.form.get('deliveryTax')?.value
-    } else if (this.form.get('deliveryTaxType')?.value == 'percentage') {
+    } else if (this.form.get('deliveryTaxType')?.value == 'PERCENTAGE') {
       deliveryTax = this.form.get('deliveryTax')?.value * (this.form.get('deliveryTax')?.value / 100)
     }
 
-    if (this.form.get('serviceTaxType')?.value == 'real') {
+    if (this.form.get('serviceTaxType')?.value == 'REAL') {
       serviceTax = this.form.get('serviceTax')?.value
-    } else if (this.form.get('serviceTaxType')?.value == 'percentage') {
+    } else if (this.form.get('serviceTaxType')?.value == 'PERCENTAGE') {
       serviceTax = this.form.get('serviceTax')?.value * (this.form.get('serviceTax')?.value / 100)
     }
 
-    if (this.form.get('discountCouponType')?.value == 'real') {
+    if (this.form.get('discountCouponType')?.value == 'REAL') {
       voucher = this.form.get('discountCoupon')?.value
-    } else if (this.form.get('discountCouponType')?.value == 'percentage') {
+    } else if (this.form.get('discountCouponType')?.value == 'PERCENTAGE') {
       voucher = this.form.get('discountCoupon')?.value * (this.form.get('discountCoupon')?.value / 100)
     }
 
@@ -220,9 +220,10 @@ export class PaymentComponent implements OnInit {
       payersDTO.push(payerDTO)
     })
 
-    let body = new RequestDTO(payersDTO, serviceTaxDTO, deliveryTaxDTO, voucherDTO, this.totalAmount)
+    let body = new PayloadRequest(payersDTO, serviceTaxDTO, deliveryTaxDTO, voucherDTO, this.totalAmount)
 
     this.paymentService.createLink(body).subscribe(links => {
+      console.log(links)
       this.paymentService.links = links
       this.router.navigate(['/result'])
     })
