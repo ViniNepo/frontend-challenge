@@ -1,13 +1,15 @@
 import {PayerDTO} from "./payerDTO";
-import {TaxDTO} from "./taxDTO";
 import {VoucherDTO} from "./voucherDTO";
+import {ServiceTaxDTO} from "./serviceTaxDTO";
+import {DeliveryTaxDTO} from "./deliveryTaxDTO";
 
 export class RequestDTO {
 
   constructor(
-    public payer: PayerDTO[],
-    public taxes: TaxDTO[],
-    public voucher: VoucherDTO,
+    public payersDTO: PayerDTO[],
+    public serviceTaxDTO: ServiceTaxDTO,
+    public deliveryTaxDTO: DeliveryTaxDTO,
+    public voucherDTO: VoucherDTO,
     public totalAmount: number,
   ) {
   }

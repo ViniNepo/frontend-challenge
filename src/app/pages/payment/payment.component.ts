@@ -1,12 +1,14 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ItemList} from "../../model/itemList";
 import {PaymentService} from "../../services/payment.service";
 import {Payer} from "../../model/payer";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Item} from "../../model/item";
 import {RequestDTO} from "../../model/request/requestDTO";
-import {TaxDTO} from "../../model/request/taxDTO";
 import {PayerDTO} from "../../model/request/payerDTO";
+import {DeliveryTaxDTO} from "../../model/request/deliveryTaxDTO";
+import {ServiceTaxDTO} from "../../model/request/serviceTaxDTO";
+import {VoucherDTO} from "../../model/request/voucherDTO";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-payment',
@@ -33,13 +35,13 @@ export class PaymentComponent implements OnInit {
   totalAmountWithTax: number = 0
   paymentOptions = [
     { text: 'Selecionar', value: 'none' },
-    { text: 'PicPay', value: 'picpay' },
     { text: 'PayPal', value: 'paypal' }
   ]
 
   constructor(
     private paymentService: PaymentService,
     private formBuilder: FormBuilder,
+    private router: Router,
   ) {
     this.payers.push(new Payer("", [], 0))
 
@@ -200,29 +202,29 @@ export class PaymentComponent implements OnInit {
   submit() {
     let deliveryTax = this.form.get('deliveryTax')?.value
     let deliveryTaxType = this.form.get('deliveryTaxType')?.value
-    let deliveryTaxDTO = new TaxDTO(deliveryTaxType, deliveryTax)
+    let deliveryTaxDTO = new DeliveryTaxDTO(deliveryTaxType, deliveryTax)
 
     let serviceTax = this.form.get('serviceTax')?.value
     let serviceTaxType = this.form.get('serviceTaxType')?.value
-    let serviceTaxDTO = new TaxDTO(serviceTaxType, serviceTax)
+    let serviceTaxDTO = new ServiceTaxDTO(serviceTaxType, serviceTax)
 
     let voucher = this.form.get('discountCoupon')?.value
     let voucherType = this.form.get('discountCouponType')?.value
-    let voucherDTO = new TaxDTO(voucherType, voucher)
+    let voucherDTO = new VoucherDTO(voucherType, voucher)
 
 
-    let taxesDTO: TaxDTO[] = []
     let payersDTO: PayerDTO[] = []
-
-    taxesDTO.push(deliveryTaxDTO, serviceTaxDTO)
 
     this.payers.forEach(payer => {
       let payerDTO = new PayerDTO(payer.paymentMethod, payer.amount)
       payersDTO.push(payerDTO)
     })
 
-    let body = new RequestDTO(payersDTO, taxesDTO, voucherDTO, this.totalAmount)
+    let body = new RequestDTO(payersDTO, serviceTaxDTO, deliveryTaxDTO, voucherDTO, this.totalAmount)
 
-    this.paymentService.pay(body)
+    this.paymentService.createLink(body).subscribe(links => {
+      this.paymentService.links = links
+      this.router.navigate(['/result'])
+    })
   }
 }

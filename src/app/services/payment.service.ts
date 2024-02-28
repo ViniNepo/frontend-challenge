@@ -11,13 +11,14 @@ import {RequestDTO} from "../model/request/requestDTO";
 export class PaymentService {
 
   selectedItems: ItemList[] = []
+  links: string[] = []
 
   constructor(private http: HttpClient) {
   }
 
-  pay(requestBody: RequestDTO) {
-    console.log('to aqui')
-    return this.http.post(`http://localhost:8080/pay`, requestBody).pipe(take(1))
+  createLink(requestBody: RequestDTO) {
+    console.log(requestBody)
+    return this.http.post<string[]>(`http://localhost:8080/api/payment/create-link`, requestBody)
   }
 
 }

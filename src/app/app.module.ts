@@ -9,13 +9,15 @@ import { LucideAngularModule, Plus, Minus, Percent, X } from 'lucide-angular';
 import {PaymentService} from "./services/payment.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import { ResultComponent } from './pages/result/result.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     PaymentComponent,
-    RestaurantsComponent
+    RestaurantsComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule,

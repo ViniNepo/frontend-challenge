@@ -1,7 +1,7 @@
 import {Item} from "../item";
 import {Payer} from "../payer";
 
-export class VoucherDTO {
+export class ServiceTaxDTO {
 
   constructor(
     public taxTypeEnum: string,

@@ -1,10 +1,10 @@
 import {Item} from "../item";
 import {Payer} from "../payer";
 
-export class TaxDTO {
+export class DeliveryTaxDTO {
 
   constructor(
-    public type: string,
+    public taxTypeEnum: string,
     public amount: number
   ) {
   }

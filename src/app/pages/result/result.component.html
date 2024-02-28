@@ -1,0 +1,28 @@
+<div class="flex flex-col h-screen bg-zinc-100">
+  <header class="bg-zinc-200">
+
+    <div class="flex flex-col items-center pt-5 pb-5">
+      <div class="flex flex-row items-center space-x-2">
+        <img src="assets/images/logo.png" class="flex h-12 w-12 object-cover ml-2 rounded-full">
+        <h2 class="flex text-zinc-900">Cantinho do Italiano</h2>
+      </div>
+    </div>
+
+    <div class="flex flex-row items-center bg-zinc-200 pl-2 pr-2 pb-2">
+      <h2 class="flex-1 text-zinc-900">Links para pagamento</h2>
+    </div>
+
+  </header>
+  <main class="flex-1 overflow-y-auto p-2">
+
+    <ul class="mt-4 flex flex-col list-none space-y-1">
+      <li *ngFor="let link of links" class="hover:bg-zinc-200 hover:rounded-md transition-colors pt-2 pb-2">
+        <div class="flex items-center">
+          <h2>{{link}}</h2>
+        </div>
+      </li>
+    </ul>
+
+  </main>
+
+</div>
